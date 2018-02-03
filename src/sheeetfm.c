@@ -70,7 +70,7 @@ static void tb_putfile(struct tb_cell *buf, int w, int x, int y, char *path)
 
 static inline float zp_percent(struct zipper *z)
 {
-	float val = z->snd.size / (float)(z->fst.size + z->snd.size) * 100;
+    float val = z->snd.size / (float)(z->fst.size + z->snd.size) * 100;
     return NaN(val) ? 0.0 : val;
 }
 
