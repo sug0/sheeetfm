@@ -33,7 +33,7 @@ your home directory with `H`.
 
 # Final notes
 
-* Thanks to (suckless)[https://suckless.org/] for `arg.h`
+* Thanks to [suckless](https://suckless.org/) for `arg.h`
 * Yes, the **eee** comes from EEE PC
 
 # License
