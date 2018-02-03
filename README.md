@@ -33,7 +33,8 @@ and `s <search term>`.
 
 The shortcuts for these are, respectively, `!`, `c` and `s`. You can also return to
 your home directory with `H`, list hidden files with `.`, refresh the file list with
-`r`, and clean the `sheeetfmd` pane with `^L`.
+`r`, clean the `sheeetfmd` pane with `^L`, and navigate up and down with `^U` and `^D`,
+respectively.
 
 # Final notes
 
