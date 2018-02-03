@@ -16,6 +16,9 @@ using around 100K to 300K.
 
 # Installing / Uninstalling
 
+This program depends on [termbox](https://github.com/nsf/termbox), and, temporarily,
+on [libmill](https://github.com/sustrik/libmill).
+
 ```
 $ sudo make install clean
 $ sudo make uninstall
