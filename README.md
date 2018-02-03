@@ -31,8 +31,9 @@ browse with `hjkl` like in vim, or use the arrow keys; input commands with `:`,
 namely `!<shell command> %s`, where `%s` is the currently selected file, `cd <dir>`,
 and `s <search term>`.
 
-The shortcuts for these are, respectively, `!`, `c` and `s`. You can return to
-your home directory with `H`.
+The shortcuts for these are, respectively, `!`, `c` and `s`. You can also return to
+your home directory with `H`, list hidden files with `.`, refresh the file list with
+`r`, and clean the `sheeetfmd` pane with `^L`.
 
 # Final notes
 
