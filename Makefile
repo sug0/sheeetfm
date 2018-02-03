@@ -28,8 +28,8 @@ sheeetfmd: $(OBJ_D)
 install: all
 	cp bin/* $(PREFIX)/bin
 
-uninstall: all
-	rm $(PREFIX)/bin/sheeetfm*
+uninstall:
+	rm -f $(PREFIX)/bin/sheeetfm*
 
 .PHONY: clean
 
