@@ -27,7 +27,7 @@ inline char *tb_input_yield(struct tb_input *in)
 
 inline char *tb_input_done(struct tb_input *in)
 {
-    char *yield = tb_input_yield(in);
+    char *yield = (char *)in->buf;
     tb_set_cursor(TB_HIDE_CURSOR, TB_HIDE_CURSOR);
     return yield;
 }
