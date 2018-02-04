@@ -256,7 +256,6 @@ int main(int argc, char *argv[])
     struct tb_cell *cells;
 
     argv0 = *argv;
-    home = getenv("HOME");
 
     ARGBEGIN {
         case 's':
@@ -271,6 +270,8 @@ int main(int argc, char *argv[])
 
     if (!sock)
         usage();
+
+    home = getenv("HOME");
 
     tb_init();
     tb_input_init(&in);
@@ -352,8 +353,6 @@ int main(int argc, char *argv[])
                 }
 update_window:
             case TB_EVENT_RESIZE:
-                cells = tb_cell_buffer();
-
                 if (tb_input_is_typing(&in)) {
                     cells = tb_list_files(&z, 0);
                     yield = tb_input_yield(&in);
@@ -363,7 +362,6 @@ update_window:
                 } else {
                     tb_list_files(&z, 1);
                 }
-                break;
             default:
                 break;
         }
