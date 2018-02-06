@@ -1,6 +1,17 @@
 #include <string.h>
 #include "tb_input.h"
 
+static inline int is_tok(char c)
+{
+    return  ( c == ' '
+           || c == '/'
+           || c == '|'
+           || c == '(' || c == ')'
+           || c == '[' || c == ']'
+           || c == '{' || c == '}'
+            );
+}
+
 inline void tb_input_init(struct tb_input *in)
 {
     in->c_state = TB_INPUT_DONE;
@@ -77,7 +88,7 @@ enum tb_input_state tb_input(struct tb_event *e, struct tb_input *in)
         memset(in->ptr, 0, TB_INPUT_BUFSZ);
         in->cx = in->ix;
     } else if (e->key == TB_KEY_CTRL_W) {
-        while (*in->ptr != ' ' && !tb_input_is_begin(in)) {
+        while (!is_tok(*in->ptr) && !tb_input_is_begin(in)) {
             *in->ptr = 0;
             in->ptr--;
             in->cx--;
