@@ -1,4 +1,3 @@
-#include <termbox.h>
 #include <string.h>
 #include "tb_cell_get.h"
 
