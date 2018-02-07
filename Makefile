@@ -6,13 +6,11 @@ LDFLAGS2=-lmill
 DEPS=$(wildcard src/*.h)
 SRC=$(wildcard src/*.c)
 OBJ=$(SRC:.c=.o)
-OBJ_C=$(filter-out src/sheeetfmd.o, $(OBJ))
 OBJ_D=src/sheeetfmd.o
+OBJ_C=$(filter-out $(OBJ_D), $(OBJ))
 PREFIX=/usr/local
 
 all: executables
-	mkdir -p bin
-	mv sheeetfm sheeetfmd bin
 
 src/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -20,13 +18,13 @@ src/%.o: %.c $(DEPS)
 executables: sheeetfm sheeetfmd
 
 sheeetfm: $(OBJ_C)
-	$(CC) -o sheeetfm $(OBJ_C) $(LDFLAGS)
+	$(CC) -o $@ $(OBJ_C) $(LDFLAGS)
 
 sheeetfmd: $(OBJ_D)
-	$(CC) -o sheeetfmd $(OBJ_D) $(LDFLAGS2)
+	$(CC) -o $@ $(OBJ_D) $(LDFLAGS2)
 
-install: all
-	cp bin/* $(PREFIX)/bin
+install: all uninstall
+	cp -f sheeetfm* $(PREFIX)/bin
 
 uninstall:
 	rm -f $(PREFIX)/bin/sheeetfm*
@@ -34,5 +32,5 @@ uninstall:
 .PHONY: clean
 
 clean:
-	rm -rf bin/
+	rm -f sheeetfm*
 	rm -f src/*.o
