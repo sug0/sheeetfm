@@ -173,22 +173,33 @@ static void zp_lookup(struct zipper *haystack, char *needle)
     zp_zip_many(haystack, many);
 }
 
-static void cmd_do(struct zipper *z, int hidden, char *sock, char *cmd)
+static void cmd_do(struct zipper *z, int hidden, char *sock, char **search, char *cmd)
 {
     int ufd, r;
     struct sockaddr_un address;
     char cwd[4096], cmdfmt[8192], *top;
 
     /* change current working directory */
-    if (cmd[0] == 'c' &&  cmd[1] == 'd') {
+    if (cmd[0] == 'c' && cmd[1] == 'd') {
         chdir(cmd + 3);
         zp_refetch(z, ".", hidden);
         return;
     }
 
-    /* change current working directory */
-    if (cmd[0] == 's' &&  cmd[1] == ' ') {
+    /* search for an entity in the file list */
+    if (cmd[0] == 's' && cmd[1] == ' ') {
+        if (*search)
+            free(*search);
+
+        *search = strdup(cmd + 2);
         zp_lookup(z, cmd + 2);
+
+        return;
+    }
+
+    /* clear the current search */
+    if (cmd[0] == 'n' && cmd[1] == 'o' && cmd[2] == 'h') {
+        *search = (*search) ? (free(*search), NULL) : NULL;
         return;
     }
 
@@ -249,11 +260,14 @@ static void usage(void)
 int main(int argc, char *argv[])
 {
     int t, h = 1;
-    char *yield, *home, *sock = NULL;
+
     struct zipper z;
     struct tb_event e;
     struct tb_input in;
     struct tb_cell *cells;
+
+    char *yield, *home,
+         *search = NULL,*sock = NULL;
 
     argv0 = *argv;
 
@@ -295,7 +309,7 @@ int main(int argc, char *argv[])
                             break;
                         case TB_INPUT_DONE:
                             yield = tb_input_done(&in);
-                            cmd_do(&z, h, sock, yield);
+                            cmd_do(&z, h, sock, &search, yield);
                             break;
                         default:
                             break;
@@ -322,7 +336,7 @@ int main(int argc, char *argv[])
                     in.cx += 3;
                     in.ptr += 3;
                 } else if (e.key == TB_KEY_CTRL_L) {
-                    cmd_do(&z, h, sock, "!clear");
+                    cmd_do(&z, h, sock, &search, "!clear");
                 } else if (e.ch == 'j' || e.key == TB_KEY_ARROW_DOWN) {
                     zp_zip(&z);
                 } else if (e.ch == 'k' || e.key == TB_KEY_ARROW_UP) {
@@ -344,6 +358,14 @@ int main(int argc, char *argv[])
                     zp_unzipall(&z);
                 } else if (e.ch == 'G') {
                     zp_zipall(&z);
+                } else if (e.ch == 'n') {
+                    if (search) {
+                        if (zp_empty_fst(&z))
+                            zp_unzipall(&z);
+
+                        zp_zip(&z);
+                        zp_lookup(&z, search);
+                    }
                 } else if (e.key == TB_KEY_CTRL_D) {
                     zp_zip_many(&z, 10);
                 } else if (e.key == TB_KEY_CTRL_U) {
@@ -368,6 +390,9 @@ update_window:
     }
 
 exit:
+    if (search)
+        free(search);
+
     tb_shutdown();
     zp_cleanup(&z);
 
