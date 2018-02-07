@@ -1,3 +1,4 @@
+* add backwards search
 * fix wide char (utf8) delete during input
 * replace libmill with vanilla bsd sockets
 * input tab scroller with zipper
