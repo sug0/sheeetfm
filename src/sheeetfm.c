@@ -235,7 +235,12 @@ static void cmd_do(struct zipper *z, int hidden, char *sock, char **search, char
         cmd++;
 
         if (strstr(cmd, "%s")) {
+            /* use the selected entity */
             top = zp_selected_path(z);
+
+            if (!top)
+                return;
+
             snprintf(cmdfmt, 8192, cmd, top);
             write(ufd, cmdfmt, strlen(cmdfmt));
         } else {
@@ -362,8 +367,9 @@ int main(int argc, char *argv[])
                     if (search) {
                         if (zp_empty_fst(&z))
                             zp_unzipall(&z);
+                        else
+                            zp_zip(&z);
 
-                        zp_zip(&z);
                         zp_lookup(&z, search);
                     }
                 } else if (e.key == TB_KEY_CTRL_D) {
