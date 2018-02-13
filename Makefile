@@ -2,7 +2,6 @@
 CC=cc
 CFLAGS=-Wall -O2
 LDFLAGS=-ltermbox
-LDFLAGS2=-lmill
 DEPS=$(wildcard src/*.h)
 SRC=$(wildcard src/*.c)
 OBJ=$(SRC:.c=.o)
@@ -21,7 +20,7 @@ sheeetfm: $(OBJ_C)
 	$(CC) -o $@ $(OBJ_C) $(LDFLAGS)
 
 sheeetfmd: $(OBJ_D)
-	$(CC) -o $@ $(OBJ_D) $(LDFLAGS2)
+	$(CC) -o $@ $(OBJ_D)
 
 install: all uninstall
 	cp -f sheeetfm* $(PREFIX)/bin
