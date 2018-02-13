@@ -16,8 +16,8 @@ using around 100K to 300K.
 
 # Installing / Uninstalling
 
-This program depends on [termbox](https://github.com/nsf/termbox), and, temporarily,
-on [libmill](https://github.com/sustrik/libmill).
+This program depends on [termbox](https://github.com/nsf/termbox). Make sure to fetch
+this library before building sheeetfm.
 
 ```
 $ sudo make install clean
