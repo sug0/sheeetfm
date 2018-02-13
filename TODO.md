@@ -1,3 +1,5 @@
+* cleanup the code
+    + add comments and such
 * add backwards search
 * fix wide char (utf8) delete during input
 * input tab scroller with zipper
