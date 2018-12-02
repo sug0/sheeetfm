@@ -23,7 +23,16 @@ static void usage(void)
 static void exit_sig(int signo)
 {
     (void)signo;
-    exit(0);
+
+    printf("\nQuit %s (y/n)? ", argv0);
+
+    char ch = getchar();
+
+    /* consume newline */
+    getchar();
+
+    if (ch == 'y')
+        exit(0);
 }
 
 static void install_signals(void)
