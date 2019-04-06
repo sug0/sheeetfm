@@ -1,5 +1,6 @@
 #include <string.h>
 #include "tb_input.h"
+#include "tb_utf8_rune_start.h"
 
 static inline int is_tok(char c)
 {
@@ -73,14 +74,17 @@ enum tb_input_state tb_input(struct tb_event *e, struct tb_input *in)
     if (e->ch && tb_input_one_more(in)) {
         len = tb_utf8_unicode_to_char(in->ptr, e->ch);
         in->ptr += len;
+        *in->ptr = 0;
         in->cx++;
     } else if (e->key == TB_KEY_SPACE && tb_input_one_more(in)) {
         *in->ptr++ = ' ';
         in->cx++;
     } else if ((e->key == TB_KEY_BACKSPACE2
            ||   e->key == TB_KEY_BACKSPACE  ) && !tb_input_is_begin(in)) {
-        len = tb_utf8_char_length(*in->ptr);
-        in->ptr -= len;
+        for (;;) {
+            if (tb_input_is_begin(in) || tb_utf8_rune_start(--in->ptr))
+                break;
+        }
         *in->ptr = 0;
         in->cx--;
     } else if (e->key == TB_KEY_CTRL_U) {
